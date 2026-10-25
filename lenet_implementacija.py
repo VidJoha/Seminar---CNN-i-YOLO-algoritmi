@@ -104,7 +104,7 @@ plt.plot(val_loss)
 plt.legend(['Training','Validation'])
 
 testiter = iter(testloader)
-images, labels = testiter.next()
+images, labels = next(testiter)
 
 with torch.no_grad():
     images, labels = images.to(device), labels.to(device)
@@ -114,14 +114,15 @@ images_np = [i.mean(dim=0).cpu().numpy() for i in images]
 
 class_names = ['T-shirt/top', 'Trouser','Pullover', 'Dress', 'Coat',
                'Sandal', 'Shirt', 'Sneaker','Bag','Ankle boot']
-fig = plt.figure(figize=(15,7))
+fig = plt.figure(figsize=(15,7))
 for i in range(50):
-    ax = fig.add_subplots(5, 10, i+1, xticks=[], yticks=[])
+    ax = fig.add_subplot(5, 10, i+1, xticks=[], yticks=[])
     ax.imshow(images_np[i], cmap=plt.cm.gray_r, interpolation='nearest')
 
-    if label[i] == torch.max(pred[i],0)[1]:
+    if labels[i] == torch.max(pred[i],0)[1]:
         ax.text(0,3,class_names[torch.max(pred[i],0)[1]],color='blue')
     else:
         ax.text(0,3,class_names[torch.max(pred[i],0)[1]],color='red')
-
+plt.tight_layout()
+plt.show()
 
