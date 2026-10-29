@@ -74,9 +74,9 @@ B_1 = np.array([
 ],dtype=np.int32)
 
 B_2 = np.array([
-    [1, 1, 1],
+    [-1, -1, -1],
     [0, 0, 0],
-    [-1, -1, -1]
+    [1, 1, 1]
 ],dtype=np.int32)
 
 C1=konvolucija_matrica(A,B_1,0,1)
