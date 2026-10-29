@@ -80,6 +80,7 @@ for epoch in range(epochs):
                     total += 1
         accuracy = total / test_data_size
         total_val_loss = total_val_loss / (idx+1)
+        train_loss.append(0)
         val_loss.append(total_val_loss)
     
         print(f"Netrenirani model | Train loss: {total_train_loss} | Validation loss: {total_val_loss} | Accuracy: {accuracy}")
