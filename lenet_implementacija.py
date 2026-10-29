@@ -54,16 +54,36 @@ print(model)
 
 print("Trenirat ću model na ",device)
 print()
-optimizer = optim.Adam(model.parameters(),lr=0.01)
+optimizer = optim.Adam(model.parameters(),lr=0.0001)
 criterion = nn.CrossEntropyLoss()
 
-epochs = 50
+epochs = 20
 train_loss, val_loss = [] ,[]
 
 for epoch in range(epochs):
     total_train_loss = 0
     total_val_loss = 0
-
+    
+    if(epoch==0): #POčetni ispis evaluacije
+        model.eval()
+        total = 0
+        for idx, (image,label) in enumerate(testloader):
+            image, label = image.to(device), label.to(device)
+            pred = model(image)
+    
+            loss = criterion(pred,label)
+            total_val_loss += loss.item()
+    
+            pred = torch.nn.functional.softmax(pred,dim=1)
+            for i,p in enumerate(pred):
+                if label[i] == torch.max(p.data,0)[1]:
+                    total += 1
+        accuracy = total / test_data_size
+        total_val_loss = total_val_loss / (idx+1)
+        val_loss.append(total_val_loss)
+    
+        print(f"Netrenirani model | Train loss: {total_train_loss} | Validation loss: {total_val_loss} | Accuracy: {accuracy}")
+    
     model.train()
     for idx, (image,label) in enumerate(trainloader):
         image, label = image.to(device), label.to(device)
